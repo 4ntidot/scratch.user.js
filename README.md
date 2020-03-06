@@ -2,7 +2,7 @@
 A useful userscript, made to improve your experience on the Scratch website.
 
 ## What does it do?
-For the moment, the userscript displays the Scratcher ID on his profile, and also shows the number of followers and number of persons he's following (scroll down to the screenshots ↓ or simply click [here](https://github.com/Ma15fo43/Improved-Scratch-Experience/new/master?readme=1#screenshots-of-the-project).<br>
+For the moment, the userscript displays the Scratcher ID on his profile, and also shows the number of followers and number of persons he's following (scroll down to the screenshots ↓ or simply click [here](https://github.com/Ma15fo43/Improved-Scratch-Experience/tree/master#screenshots-of-the-project).<br>
 Also, the "forum" button that directly goes to ~space~ the forums (no, srsly?) is back on the navbar 👌🏻
 
 ## How to install it?
