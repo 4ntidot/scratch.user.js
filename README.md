@@ -12,7 +12,7 @@ Then go [here](https://github.com/Ma15fo43/improved-scratch-experience/raw/maste
 ## How to make a "custom navbar button"?
 Are you tired of seeing the boring text "Forum" on the navbar? Don't worry, we can change that too! Simply edit the script step by step, I'll show you...
 
-1. Go to the **Dashboard** of your *Userscript manager extension* (we're calling it *UME*): 
+1. Go to the **Dashboard** of your *Userscript manager extension* (we're calling it *UME*): <br>
 ![image](https://user-images.githubusercontent.com/37367577/74733969-c805bc80-524d-11ea-9c9c-684a27bbe1bd.png)
 
 2. **Click** on my script to *edit* it:<br>
