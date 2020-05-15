@@ -3,7 +3,7 @@ A useful userscript, made to improve your experience on the Scratch website.
 
 ## What does it do?
 For the moment, the userscript displays the Scratcher ID on his profile, and also shows the number of followers and number of persons he's following (scroll down to the screenshots ↓ or simply click [here](https://github.com/Ma15fo43/Improved-Scratch-Experience/tree/master#screenshots-of-the-project).<br>
-Also, the "forum" button that directly goes to ~space~ the forums (no, srsly?) is back on the navbar 👌🏻
+Also, the "forum" button that directly goes to ~space~ the forums is back on the navbar 👌🏻
 
 ## How to install it?
 First, you have to download a Userscript manager extension such as Tampermonkey (I personally use it and love it) on your favorite browser (Brave, Firefox 🦊, Chrome...). <br>
@@ -12,7 +12,7 @@ Then go [here](https://github.com/Ma15fo43/improved-scratch-experience/raw/maste
 ## How to make a "custom navbar button"?
 Are you tired of seeing the boring text "Forum" on the navbar? Don't worry, we can change that too! Simply edit the script step by step, I'll show you...
 
-1. Go to the **Dashboard** of your *Userscript manager extension* (we're calling it *UME*): <br>
+1. Go to the **Dashboard** of your *Userscript manager extension*<br>
 ![image](https://user-images.githubusercontent.com/37367577/74733969-c805bc80-524d-11ea-9c9c-684a27bbe1bd.png)
 
 2. **Click** on my script to *edit* it:<br>
@@ -52,4 +52,9 @@ a
 ## Still having trouble?
 Do you need help, or do you have a question? I can answer it, just create an issue on this repository! <br>
 Click here: https://github.com/Ma15fo43/Improved-Scratch-Experience/issues/new <br>
-You can also add me on Discord - <code>Mazz3015#2003</code>
+You can also add me on Discord - <code>Mazz#0270</code>
+
+## To Do list
+- [x] Go to "forum" button
+- [x] Show followers on user's page
+- [x] Display ID on user's profile
