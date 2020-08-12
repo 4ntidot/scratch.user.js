@@ -51,8 +51,8 @@ a
 
 ## Still having trouble?
 Do you need help, or do you have a question? I can answer it, just create an issue on this repository! <br>
-Click here: https://github.com/Ma15fo43/Improved-Scratch-Experience/issues/new <br>
-You can also add me on Discord - <code>Mazz#0270</code>
+Click here: https://github.com/mazzlabs/Improved-Scratch-Experience/issues/new <br>
+You can also add me on Discord - <code>Mazz#4946</code>
 
 ## To Do list
 - [x] Go to "forum" button
