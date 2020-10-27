@@ -1,4 +1,4 @@
-# Improved-Scratch-Experience
+# scratch.user.js
 A useful userscript, made to improve your experience on the Scratch website.
 
 ## What does it do?
