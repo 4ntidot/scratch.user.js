@@ -17,7 +17,7 @@ Are you tired of seeing the boring text "Forum" on the navbar? Don't worry, we c
 
 2. **Click** on my script to *edit* it:<br>
 ![image](https://user-images.githubusercontent.com/37367577/74734410-c5579700-524e-11ea-933e-7bdc1969b783.png)
-a
+
 3. **Edit** the following *1* and *2* with your custom URL and the name of your cool button:
 ```js
 // ==UserScript==
