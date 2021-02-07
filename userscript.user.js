@@ -1,85 +1,110 @@
 // ==UserScript==
-// @name         Moyenne VieScolaire
-// @namespace    none
-// @version      1.0
-// @description  Un script qui permet d'afficher la moyenne générale sur l'ENT VieScolaire.
-// @author       Maxan Fournier
-// @match        https://lyceepaullapie92.la-vie-scolaire.fr/portail/NOTES
+// @name         Improved scratch experience
+// @namespace    https://github.com/mazzlabs/scratch.user.js
+// @version      2.0
+// @description  For a better Scratch experience
+// @author       mazzlabs
+// @match        https://scratch.mit.edu/*
 // @grant        none
 // ==/UserScript==
 
 (async function () {
     'use strict';
 
-    window.onload = await awaitForContent();
+    /* FORUM BUTTON PART */
+    var oldNavbarVersion = document.getElementById("pagewrapper");
 
-    async function awaitForContent() {
-        if (document.getElementsByTagName("iframe")[0] == undefined) {
-            setTimeout(function() {
-                awaitForContent();
-            }, 100)
-        } else if (document.getElementsByTagName("iframe")[0].contentDocument.getElementById("content")) {
-            startScript();
-        } else {
-            setTimeout(function() {
-                awaitForContent();
-            }, 100)
-        }
+    if (oldNavbarVersion == undefined) { // new version of the navbar
+        document.getElementsByTagName("li")[4].innerHTML = '<a href="/discuss/15">Forum</a>';
+    } else { // fallback for the old version of the navbar
+        document.getElementsByTagName("li")[3].innerHTML = '<a href="/discuss/15">Forum</a>';
     }
 
-    async function startScript() {
-        const iframe = document.getElementsByTagName("iframe")[0].contentDocument;
-        const content = iframe.getElementById("content");
+    /* FOLLOWERS/FOLLOWING PART */
+    let i = 0;
+    let y = 0;
+    let tabName = document.title.toString().split(" ")[0];
 
-        gatherText(content);
+    if (document.title !== `${tabName} on Scratch`) {
+        return;
+    } else if (document.title == `ma15fo43 on scratch`) {
+        document.getElementsByTagName("h2")[0].innerHTML = "ma15fo43 👑";
     }
 
-    async function gatherText(content) {
-        let marksArray = [];
-        let coeffArray = [];
-        let numberOfMarks = content.textContent.split("coeff").length;
-        
-        for (let i = 1; i < numberOfMarks; i++) {
-            let textContent = content.textContent;
-            let getCoeff = textContent.split("coeff. ")[i].split(")")[0];
-            let getMark = textContent.split(") : ")[i].split("/20")[0];
-            
-            if (!isNaN(parseFloat(getCoeff)) && !isNaN(parseFloat(getMark))) {
-                marksArray.push(parseInt(getMark) * parseInt(getCoeff));
-                coeffArray.push(parseInt(getCoeff));
+    window.onload = await sendReq();
+
+    async function sendReq() {
+        await showIDRequest();
+        await followingRequest();
+        await followersRequest();
+    }
+
+    async function showIDRequest() {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var parsed = JSON.parse(this.responseText);
+                var locationToAdd = document.getElementsByClassName("location")[0].innerText.toString();
+                document.getElementsByClassName("location")[0].innerHTML = `${locationToAdd} - ID: ${parsed.id}`;
             }
         }
-
-        calculate(marksArray, coeffArray);
+        xhttp.open("GET", `https://api.scratch.mit.edu/users/${tabName}`, true);
+        xhttp.send();
     }
 
-    async function calculate(marks, coeff) {
-        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    async function followingRequest() {
+        var xhttp = new XMLHttpRequest();
+        var parser = new DOMParser();
 
-        let marksSum = marks.reduce(reducer);
-        let coeffSum = coeff.reduce(reducer);
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let parsed = parser.parseFromString(this.responseText, "text/html");
+                let followingCounter = parsed.getElementsByTagName("h2")[0].innerText.toString();
+                let croppedFollowing = followingCounter.split("(")[1];
 
-        let average = +(Math.round((marksSum / coeffSum) + "e+2") + "e-2");
+                followingH2Checker();
 
-        display(average);
+                document.getElementsByTagName("h4")[y].innerHTML = `Following (${croppedFollowing}`;
+            }
+        };
+
+        xhttp.open("GET", `https://scratch.mit.edu/users/${tabName}/following`, true);
+        xhttp.send();
     }
 
-    async function display(average) {
-        let getLocation = document.getElementsByTagName("iframe")[0].contentDocument.getElementsByClassName("tableReleve")[0];
+    async function followersRequest() {
+        var xhttp = new XMLHttpRequest();
+        var parser = new DOMParser();
 
-        let tr = document.createElement("tr");
-        tr.className = "odd";
-        getLocation.appendChild(tr);
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let parsed = parser.parseFromString(this.responseText, "text/html");
+                let followersCounter = parsed.getElementsByTagName("h2")[0].innerText.toString();
+                let croppedFollowers = followersCounter.split("(")[1];
 
-        let leftElement = document.createElement("td");
-        leftElement.className = "tdReleveLeft";
-        leftElement.textContent = "Moyenne générale";
-        leftElement.style.fontWeight = "bold";
-        tr.appendChild(leftElement);
+                followersH2Checker();
 
-        let rightElement = document.createElement("td");
-        rightElement.className = "tdReleveRight";
-        rightElement.textContent = average;
-        tr.appendChild(rightElement);
+                document.getElementsByTagName("h4")[i].innerHTML = `Followers (${croppedFollowers}`;
+
+            }
+        };
+
+        xhttp.open("GET", `https://scratch.mit.edu/users/${tabName}/followers`, true);
+        xhttp.send();
+    }
+
+    function followingH2Checker() {
+        while (document.getElementsByTagName("h4")[y].innerText != "Following" && document.getElementsByTagName("h4")[y].innerText != "Ceux que je suis") {
+            y++;
+            return followingH2Checker();
+        }
+    }
+
+    function followersH2Checker() {
+        while (document.getElementsByTagName("h4")[i].innerText != "Followers" && document.getElementsByTagName("h4")[i].innerText != "Ceux qui me suivent") {
+            i++;
+            return followersH2Checker();
+        }
     }
 })();
