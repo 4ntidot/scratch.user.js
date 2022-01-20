@@ -1,110 +1,54 @@
 // ==UserScript==
 // @name         Improved scratch experience
-// @namespace    https://github.com/mazzlabs/scratch.user.js
-// @version      2.0
+// @namespace    https://github.com/fowled/scratch.user.js
+// @version      3.0
 // @description  For a better Scratch experience
-// @author       mazzlabs
+// @author       fowled
 // @match        https://scratch.mit.edu/*
 // @grant        none
+// @run-at       document-start
 // ==/UserScript==
 
 (async function () {
     'use strict';
 
-    /* FORUM BUTTON PART */
-    var oldNavbarVersion = document.getElementById("pagewrapper");
+    window.onload = async function () {
+        const oldNavbarVersion = document.getElementById("pagewrapper");
+        const user = document.title.split(" ")[0];
+        const url = window.location.href;
 
-    if (oldNavbarVersion == undefined) { // new version of the navbar
-        document.getElementsByTagName("li")[4].innerHTML = '<a href="/discuss/15">Forum</a>';
-    } else { // fallback for the old version of the navbar
-        document.getElementsByTagName("li")[3].innerHTML = '<a href="/discuss/15">Forum</a>';
-    }
-
-    /* FOLLOWERS/FOLLOWING PART */
-    let i = 0;
-    let y = 0;
-    let tabName = document.title.toString().split(" ")[0];
-
-    if (document.title !== `${tabName} on Scratch`) {
-        return;
-    } else if (document.title == `ma15fo43 on scratch`) {
-        document.getElementsByTagName("h2")[0].innerHTML = "ma15fo43 👑";
-    }
-
-    window.onload = await sendReq();
-
-    async function sendReq() {
-        await showIDRequest();
-        await followingRequest();
-        await followersRequest();
-    }
-
-    async function showIDRequest() {
-        var xhttp = new XMLHttpRequest();
-
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var parsed = JSON.parse(this.responseText);
-                var locationToAdd = document.getElementsByClassName("location")[0].innerText.toString();
-                document.getElementsByClassName("location")[0].innerHTML = `${locationToAdd} - ID: ${parsed.id}`;
-            }
+        if (!oldNavbarVersion) {
+            document.getElementsByTagName("li")[4].innerHTML = '<a href="/discuss/15">Forum</a>';
+        } else {
+            document.getElementsByTagName("li")[3].innerHTML = '<a href="/discuss/15">Forum</a>';
         }
-        xhttp.open("GET", `https://api.scratch.mit.edu/users/${tabName}`, true);
-        xhttp.send();
-    }
 
-    async function followingRequest() {
-        var xhttp = new XMLHttpRequest();
-        var parser = new DOMParser();
-
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                let parsed = parser.parseFromString(this.responseText, "text/html");
-                let followingCounter = parsed.getElementsByTagName("h2")[0].innerText.toString();
-                let croppedFollowing = followingCounter.split("(")[1];
-
-                followingH2Checker();
-
-                document.getElementsByTagName("h4")[y].innerHTML = `Following (${croppedFollowing}`;
-            }
-        };
-
-        xhttp.open("GET", `https://scratch.mit.edu/users/${tabName}/following`, true);
-        xhttp.send();
-    }
-
-    async function followersRequest() {
-        var xhttp = new XMLHttpRequest();
-        var parser = new DOMParser();
-
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                let parsed = parser.parseFromString(this.responseText, "text/html");
-                let followersCounter = parsed.getElementsByTagName("h2")[0].innerText.toString();
-                let croppedFollowers = followersCounter.split("(")[1];
-
-                followersH2Checker();
-
-                document.getElementsByTagName("h4")[i].innerHTML = `Followers (${croppedFollowers}`;
-
-            }
-        };
-
-        xhttp.open("GET", `https://scratch.mit.edu/users/${tabName}/followers`, true);
-        xhttp.send();
-    }
-
-    function followingH2Checker() {
-        while (document.getElementsByTagName("h4")[y].innerText != "Following" && document.getElementsByTagName("h4")[y].innerText != "Ceux que je suis") {
-            y++;
-            return followingH2Checker();
+        if (url.includes("/users/")) {
+            showID(user);
+            followersCount(user);
         }
     }
 
-    function followersH2Checker() {
-        while (document.getElementsByTagName("h4")[i].innerText != "Followers" && document.getElementsByTagName("h4")[i].innerText != "Ceux qui me suivent") {
-            i++;
-            return followersH2Checker();
-        }
+    async function showID(user) {
+        fetch(`https://scratchdb.lefty.one/v3/user/info/${user}`)
+            .then(response => response.json())
+            .then(data => {
+                const location = data.country;
+                const id = data.id;
+
+                document.getElementsByClassName("location")[0].innerHTML = `${location} • ${id}`;
+            });
+    }
+
+    async function followersCount(user) {
+        fetch(`https://scratchdb.lefty.one/v3/user/info/${user}`)
+            .then(response => response.json())
+            .then(data => {
+                const followingCount = data.statistics.following;
+                const followersCount = data.statistics.followers;
+
+                document.getElementsByClassName("box-head")[5].innerHTML = `<h4>Following (${followingCount})</h4>`;
+                document.getElementsByClassName("box-head")[6].innerHTML = `<h4>Followers (${followersCount})</h4>`;
+            });
     }
 })();
