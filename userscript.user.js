@@ -5,28 +5,26 @@
 // @description  For a better Scratch experience
 // @author       fowled
 // @match        https://scratch.mit.edu/*
-// @grant        none
 // @run-at       document-start
+// @grant        none
 // ==/UserScript==
 
 (async function () {
     'use strict';
 
-    window.onload = async function () {
-        const oldNavbarVersion = document.getElementById("pagewrapper");
-        const user = document.title.split(" ")[0];
-        const url = window.location.href;
+    const oldNavbarVersion = document.getElementById("pagewrapper");
+    const user = document.title.split(" ")[0];
+    const url = window.location.href;
 
-        if (!oldNavbarVersion) {
-            document.getElementsByTagName("li")[4].innerHTML = '<a href="/discuss/15">Forum</a>';
-        } else {
-            document.getElementsByTagName("li")[3].innerHTML = '<a href="/discuss/15">Forum</a>';
-        }
+    if (!oldNavbarVersion) {
+        document.getElementsByTagName("li")[4].innerHTML = '<a href="/discuss/15">Forum</a>';
+    } else {
+        document.getElementsByTagName("li")[3].innerHTML = '<a href="/discuss/15">Forum</a>';
+    }
 
-        if (url.includes("/users/")) {
-            showID(user);
-            followersCount(user);
-        }
+    if (url.includes("/users/")) {
+        showID(user);
+        followersCount(user);
     }
 
     async function showID(user) {
