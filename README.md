@@ -57,3 +57,4 @@ Click here: https://github.com/mazzlabs/scratch.user.js/issues/new <br>
 - [x] Go to "forum" button
 - [x] Show followers on user's page
 - [x] Display ID on user's profile
+- [] Set all pages to 3.0 
