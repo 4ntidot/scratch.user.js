@@ -16,6 +16,7 @@
         const oldNavbarVersion = document.getElementById("pagewrapper");
         const user = document.title.split(" ")[0];
         const url = window.location.href;
+		const projectId = url.split("/")[0];
 
         if (!oldNavbarVersion) {
             document.getElementsByTagName("li")[4].innerHTML = '<a href="/discuss/15">Forum</a>';
@@ -26,7 +27,14 @@
         if (url.includes("/users/")) {
             showID(user);
             followersCount(user);
+			setVersion(3);
         }
+		if (url.includes("/discuss/")) {
+			setVersion(3);
+		}
+		if (url.includes("/mystuff/")) {
+			setVersion(3);
+		}
 
         async function showID(user) {
             fetch(`https://scratchdb.lefty.one/v2/user/info/${user}`)
@@ -50,5 +58,6 @@
                     document.getElementsByClassName("box-head")[6].innerHTML = `<h4>Followers (${followersCount})</h4>`;
                 });
         }
+		
     }
 })();
